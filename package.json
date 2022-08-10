@@ -9,6 +9,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "inquirer": "8.2.4"
+    "axios": "^0.27.2",
+    "inquirer": "8.2.4",
+    "mustache": "^4.2.0",
+    "promisfy": "^1.2.0"
   }
 }

@@ -1,42 +1,79 @@
 
 // TODO: Create a function that returns a license badge based on which license is passed in
 // If there is no license, return an empty string
-// tags of licenses listed
-// https://gist.github.com/lukas-h/2a5d00690736b4c3a7ba
+const axios = require("axios");
+// const promise = require("promise");
+const fs = require("fs");
+
 function renderLicenseBadge(license) {
-  console.log(license);
-  switch (license) {
-    case "APACHE 2.0":
-      return "[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)]";
-  }
+  // create badges license using /aur/license/:packageName
+  return `[![License](https://img.shields.io/badge/License-${license}-blue.svg)](https://opensource.org/licenses/${license})`;
 }
 
 // TODO: Create a function that returns the license link
 // If there is no license, return an empty string
-function renderLicenseLink(license) {
-  switch (licenselink) {
-    case "APACHE 2.0":
-      return "https://opensource.org/licenses/Apache-2.0";
-
-  }
+async function renderLicenseLink(license) {
+  fetch(`https://api.github.com/licenses/${license}`)
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data.url);
+    return ('${data.url}');
+    
+  }) 
 }
+ 
+
 
 // TODO: Create a function that returns the license section of README
 // If there is no license, return an empty string
-function renderLicenseSection(license) {
-  switch (licensereadme) {
-    case "APACHE 2.0":
-      return ;
-  }
+async function renderLicenseSection(license) {
+  axios.get(`https://api.github.com/licenses/${license}`)
+  .then(function(response) {
+    let licenseBody = response.data.body
+    .replace("[year]", new Date().getFullYear())
+    .replace("[fullname]", "Jerrod Linderman");
+    fs.writeFile("license.txt", licenseBody, function(err) {
+      if (err) {
+        return console.log(err);
+      }
+    })
+  })
 }
 
+
+
+
+
+
 // TODO: Create a function to generate markdown for README
-// using layout template from readme of uofu readme
 function generateMarkdown(data) {
-  return `# ${data.title}
-
-
-## Table of Contents:
+  return `
+  <div id="header" align="center">
+  <img src="https://media.giphy.com/media/M9gbBd9nbDrOTu1Mqx/giphy.gif" width="100"/>
+  </div>
+  <div align="center">
+  Jerrod Linderman
+  </div>
+  <div align="center">
+  <img src="https://komarev.com/ghpvc/?username=${data.github}&style=flat-square&color=blue" alt=""/>
+  </div>
+  
+  
+  <h1 align="center">Badges</h1>
+  <div align="center">
+  <a href="">
+  
+  ${renderLicenseBadge(data.license)}
+  
+  </a>
+  </div>
+  
+  <h1 align="center">
+  
+  ${data.title}</h1>
+  
+  
+  ## Table of Contents:
   1. [Description](#description)
   2. [Installation](#installation)
   3. [Usage](#usage)
@@ -59,14 +96,17 @@ function generateMarkdown(data) {
   ${data.credits}
 
   ## License
-  ${renderLicenseBadge(data.license)} 
-  // not working maybe need an array of licenses in const waiting for help from scott.
+
+  ${(data.license)}
+
+  ${renderLicenseLink(data.license)}
+  ${renderLicenseSection(data.license)}
 
   ## Tests
   ${data.tests}
 
   ## GitHub
-  ${data.github}
+  [${data.github}](https://github.com/${data.github})
 
   ## Email
   ${data.email}

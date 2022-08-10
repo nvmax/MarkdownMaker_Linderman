@@ -1,6 +1,7 @@
 
 
 // TODO: Include packages needed for this application
+const axios = require("axios");
 const inquirer = require("inquirer");
 const fs = require("fs");
 const gMarkDown = require("./utils/generateMarkdown.js");
@@ -38,7 +39,7 @@ function questions(){
             type: "list",
             message: "What License is used in this repository?", // 6 - License
             name: "license",
-            choices: ["APACHE 2.0", "MIT", "ISC", "GPL 3.0", "BSD 3", "None"]
+            choices: ["APACHE", "MIT", "ISC", "GPL 3.0", "BSD 3", "None"]
         },
         {
             type: "input",
@@ -60,16 +61,16 @@ function questions(){
 
 
 // TODO: Create a function to write README file
-function writeToFile(data) {
-    fs.appendFile(`README.md`, data,(err) => err? console.error(err): console.log("Successfully wrote to file"));
-
+function writeToFile(file,data) {
+     fs.appendFile(`READMEtest.md`, data,(err) => err? console.error(err): console.log("Successfully wrote to file"));
 };
+
 // TODO: Create a function to initialize app
 async function init() {
     let answers = await questions();
     writeToFile((answers.file),(gMarkDown(answers)));
 }
-    
+
 
 // Function call to initialize app
 init();
