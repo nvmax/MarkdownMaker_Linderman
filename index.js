@@ -1,76 +1,87 @@
-
-
 // TODO: Include packages needed for this application
-const axios = require("axios");
 const inquirer = require("inquirer");
 const fs = require("fs");
 const gMarkDown = require("./utils/generateMarkdown.js");
 
-
 // TODO: Create an array of questions for user input
-function questions(){
-    return inquirer.prompt([
-        {
-            type: "input",
-            message: "What is the title of your project?",  // 1 - Title
-            name: "title"
-        },
-        {
-            type: "input",
-            message: "What is the description of your project?", // 2 - Description
-            name: "description"
-        },
-        {
-            type: "input",
-            name: "installation",
-            message: "How do you install your project?" // 3 - Installation
-        },
-        {
-            type: "input",
-            message: "How do you use your project?", // 4 - Usage
-            name: "usage"
-        },
-        {
-            type: "input",
-            message: "Who contributed to your project?", // 5 - Credits
-            name: "credits"
-        },
-        {
-            type: "list",
-            message: "What License is used in this repository?", // 6 - License
-            name: "license",
-            choices: ["APACHE", "MIT", "ISC", "GPL 3.0", "BSD 3", "None"]
-        },
-        {
-            type: "input",
-            message: "How do you test your project?", // 8 - Tests
-            name: "tests"
-        },
-        {
-            type: "input",
-            message: "What is your GitHub username?", // 9 - GitHub Username
-            name: "github"
-        },
-        {
-            type: "input",
-            message: "What is your email address?", // 10 - Email
-            name: "email"
-        }
-    ])};   
+const questions = [
+    {
+        type: "input",
+        message: "What is your Full Name?",
+        name: "fullName"
+    },
+    {
+        type: "checkbox",
+        message: "Please choose the badges you would like to include in your README",  
+        name: "badges",
+        choices: ["Node.js", "jQuery", "NPM", "Express.js", "SASS", "WebStorm", "CSS3", "HTML5", "JavaScript", "Markdown" ]
+    },
+    {
+        type: "input",
+        message: "What is the title of your project?",  
+        name: "title"
+    },
+    {
+        type: "input",
+        message: "What is the description of your project?", 
+        name: "description"
+    },
+    {
+        type: "input",
+        name: "installation",
+        message: "How do you install your project?",
+    },
+    {
+        type: "input",
+        message: "How do you use your project?", 
+        name: "usage"
+    },
+    {
+        type: "list",
+        message: "Can anyone contribute to your project?", 
+        name: "contributing",
+        choices: ["Yes", "No"],
+    },
+    {
+        type: "input",
+        message: "How do you test your project?",
+        name: "tests"
+    },
+    {
+        type: "list",
+        message: "What License is used in this repository?", 
+        name: "license",
+        choices: ["APACHE-2.0", "MIT", "ISC", "gpl-3.0", "bsd-3-clause", "cc0-1.0", "unlicense"]
+    },
+    {
+        type: "input",
+        message: "What is your GitHub username?",
+        name: "github"
+    },
+    {
+        type: "input",
+        message: "What is your email address?",
+        name: "email"
+    }
+];   
     
-
-
 // TODO: Create a function to write README file
-function writeToFile(file,data) {
-     fs.appendFile(`READMEtest.md`, data,(err) => err? console.error(err): console.log("Successfully wrote to file"));
+function writeToFile(file, data) {
+   fs.writeFileSync(`README.md`, data, (err) => err ? console.error(err) : console.log("Successfully wrote to file"));
 };
 
 // TODO: Create a function to initialize app
 async function init() {
-    let answers = await questions();
-    writeToFile((answers.file),(gMarkDown(answers)));
+    try {
+        // thanks to scott casey for the help with this code
+        const answers = await inquirer.prompt(questions);
+        const md = gMarkDown(answers);
+        writeToFile(answers.file, md);
+        console.log(md);
+    } catch (err) {
+        console.log(err);
+    }
 }
-
 
 // Function call to initialize app
 init();
