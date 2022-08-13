@@ -1,6 +1,6 @@
 const axios = require("axios");
 const fs = require("fs");
-const licenseArr = ["APACHE-2.0", "MIT", "ISC", "GPL 3.0", "BSD 3", "None"];
+const licenseArr = ["APACHE-2.0", "MIT", "ISC", "gpl-3.0", "bsd-3-clause", "unlicense"];
 
 // TODO: Create a function that returns a license badge based on which license is passed in
 // If there is no license, return an empty string
@@ -22,7 +22,7 @@ function renderLicenseLink(license) {
   } else if (license===licenseArr[3]){
     return `[${licenseArr[3]}](https://opensource.org/licenses/gpl-3.0.html)`
   } else if (license===licenseArr[4]){
-    return `[${licenseArr[4]}](https://opensource.org/licenses/BSD-3-Clause)`
+    return `[${licenseArr[4]}](https://opensource.org/licenses/bsd-3-clause)`
   } else if (license===licenseArr[5]){
     return `[${licenseArr[5]}](http://unlicense.org/)`
   }
@@ -79,8 +79,6 @@ function renderLicenseSection(license) {
   })
 };
 
-
-
 // function for contributing choices yes or now and returns string
 function renderContributing(contributing) {
   if (contributing === "Yes") {
@@ -98,7 +96,7 @@ function generateMarkdown(data) {
   </div>
   <div align="center">
   
-  ## ${data.name}
+  ## ${data.fullName}
 
   </div>
   <div align="center">
@@ -127,48 +125,58 @@ function generateMarkdown(data) {
   1. [Description](#description)
   2. [Installation](#installation)
   3. [Usage](#usage)
-  4. [How to Contribute](#Contributing)
+  4. [How To Contribute](#contribute)
   5. [license](#license)
   6. [Tests](#tests)
-  7. [github](#github)
-  8. [email](#email)
+  7. [Github](#github)
+  8. [Email](#questions)
 
   ## Description
   ${data.description}
 
+
+
   ## Installation
   ${data.installation}
+
+
 
   ## Usage
   ${data.usage}
 
+
  
-  ## Contributing
+  ## Contribute
+  ![GitHub license](https://img.shields.io/badge/Made%20by-%40nvmax-blue)
   [Contributor Covenant](https://www.contributor-covenant.org/)
 
   ${renderContributing(data.contributing)}
+
+
 
   ## License
 
   Published under the [${data.license}](license.txt) License.
   
 
-  Read More about the licence by clicking the link ${renderLicenseLink(data.license)}.
+  Read More about the licence by clicking this Link: ${renderLicenseLink(data.license)}.
  
 
   ## Tests
   ${data.tests}
+
+
 
   ## GitHub
   [${data.github}](https://github.com/${data.github})
 
   ## Questions
   If you have any questions, please contact me by clicking the email link below:
-  ### ${data.email !== null ? "[" + data.email + "](" + data.email + ")" : "Owner has not provided an email"}
-  
+  ### ${data.email !== null ? "[" + data.email + "](" + data.email + ")" : "Owner has not provided an email"} 
+
+ 
 `;
 }
 
 module.exports = generateMarkdown;
 
- 

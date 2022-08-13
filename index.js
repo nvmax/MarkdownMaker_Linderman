@@ -17,6 +17,12 @@ const questions = [
         choices: ["Node.js", "jQuery", "NPM", "Express.js", "SASS", "WebStorm", "CSS3", "HTML5", "JavaScript", "Markdown" ]
     },
     {
+        type: "list",
+        message: "What License is used in this repository?", 
+        name: "license",
+        choices: ["APACHE-2.0", "MIT", "ISC", "gpl-3.0", "bsd-3-clause", "unlicense"]
+    },
+    {
         type: "input",
         message: "What is the title of your project?",  
         name: "title"
@@ -48,12 +54,6 @@ const questions = [
         name: "tests"
     },
     {
-        type: "list",
-        message: "What License is used in this repository?", 
-        name: "license",
-        choices: ["APACHE-2.0", "MIT", "ISC", "gpl-3.0", "bsd-3-clause", "cc0-1.0", "unlicense"]
-    },
-    {
         type: "input",
         message: "What is your GitHub username?",
         name: "github"
@@ -77,7 +77,6 @@ async function init() {
         const answers = await inquirer.prompt(questions);
         const md = gMarkDown(answers);
         writeToFile(answers.file, md);
-        console.log(md);
     } catch (err) {
         console.log(err);
     }
